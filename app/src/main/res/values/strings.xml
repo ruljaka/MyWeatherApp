@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="Today">Today</string>
+    <string name="mm">mm</string>
+    <string name="wind">wind</string>
+    <string name="m_s">m/s</string>
+    <string name="km">km</string>
+    <string name="mb">mb</string>
+    <string name="precipitation_probability">Precipitation probability</string>
+    <string name="empty">-</string>
+    <string name="uv">UV</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="perceived_temperature">Perceived temperature</string>
+    <string name="visibility">Visibility</string>
+    <string name="pressure">Pressure</string>
+    <string name="hum">HUM</string>
+    <string name="empty_double">--</string>
+    <string name="empty_empty">-- / --</string>
+    <string name="location_btn">location_btn</string>
+    <string name="ok">ok</string>
+    <string name="enter_city_name">Enter city name</string>
+    <string name="today">Today</string>
+    <string name="weather_icon">weather icon</string>
+    <string name="main_image">main_image</string>
+
+    <integer-array name="weather_icons">
+
+
+    </integer-array>
+</resources>
