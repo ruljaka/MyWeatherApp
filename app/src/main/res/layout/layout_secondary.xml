@@ -9,18 +9,29 @@
     android:background="@drawable/gradient_secondary_day"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/up_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_up_arrow" />
 
     <GridView
         android:id="@+id/dailyGV"
         android:layout_width="match_parent"
         android:layout_height="110dp"
+        android:layout_marginTop="16dp"
         android:numColumns="1"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/up_arrow">
+
+    </GridView>
 
     <com.robinhood.spark.SparkView
         android:id="@+id/sparkView"

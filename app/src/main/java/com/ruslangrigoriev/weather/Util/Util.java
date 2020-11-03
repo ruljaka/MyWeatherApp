@@ -1,10 +1,11 @@
 package com.ruslangrigoriev.weather.Util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.ruslangrigoriev.weather.MyEventListener;
 import com.ruslangrigoriev.weather.model.CurrentWeather;
-import com.ruslangrigoriev.weather.model.Forecast;
-import com.ruslangrigoriev.weather.network.NetworkService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.ZonedDateTime;
 
 public class Util {
     public static final String MY_TAG = "MyTag";
+    private final String SAVED_CITY = "saved_city";
     private static Util instance;
 
     public Util() {
@@ -37,19 +39,30 @@ public class Util {
         ZoneId LondonZoneId = ZoneId.of("Europe/London");
         ZonedDateTime londonZDTSunset = dateTimeSunset.atZone(LondonZoneId);
         ZonedDateTime londonZDTSunrise = dateTimeSunrise.atZone(LondonZoneId);
-        Log.d(MY_TAG,londonZDTSunrise.toString()+ "sunrise");
-        Log.d(MY_TAG,londonZDTSunset.toString() + "sunset\n");
+        Log.d(MY_TAG, londonZDTSunrise.toString() + "sunrise");
+        Log.d(MY_TAG, londonZDTSunset.toString() + "sunset\n");
 
 
         ZoneId systemZoneId = ZoneId.of(currentWeather.getData().get(0).getTimezone());
         ZonedDateTime systemZDTSunset = londonZDTSunset.withZoneSameInstant(systemZoneId);
         ZonedDateTime systemZDTSunrise = londonZDTSunrise.withZoneSameInstant(systemZoneId);
         ZonedDateTime nowZDT = ZonedDateTime.now().withZoneSameInstant(systemZoneId);
-        Log.d(MY_TAG,systemZDTSunrise.toString() + "sunrise");
-        Log.d(MY_TAG,systemZDTSunset.toString()+ "sunset\n");
+        Log.d(MY_TAG, systemZDTSunrise.toString() + "sunrise");
+        Log.d(MY_TAG, systemZDTSunset.toString() + "sunset\n");
 
-        Log.d(MY_TAG,nowZDT.toString()+ "now");
+        Log.d(MY_TAG, nowZDT.toString() + "now");
 
         return systemZDTSunset.isAfter(nowZDT) && systemZDTSunrise.isBefore(nowZDT);
     }
+
+    public String loadCity(SharedPreferences sPref) {
+       return sPref.getString(SAVED_CITY, "");
+    }
+
+    public void saveCity(SharedPreferences sPref, String city) {
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(SAVED_CITY, city);
+        ed.apply();
+    }
+
 }

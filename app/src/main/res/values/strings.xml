@@ -17,7 +17,7 @@
     <string name="empty_double">--</string>
     <string name="empty_empty">-- / --</string>
     <string name="location_btn">location_btn</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="enter_city_name">Enter city name</string>
     <string name="today">Today</string>
     <string name="weather_icon">weather icon</string>

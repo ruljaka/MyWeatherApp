@@ -34,7 +34,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements MyEventListener {
 
     public static final String MY_TAG = "MyTag";
-    private final String SAVED_CITY = "saved_city";
     private String lang;
 
     private String city;
@@ -101,11 +100,13 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
         dialogCityNameET = locationDialog.findViewById(R.id.dialogCityNameET);
         dialogOkBtn = locationDialog.findViewById(R.id.okBtn);
 
+
         //set language
         lang = getResources().getConfiguration().locale.getLanguage();
 
         //load city from preference
-        loadCity();
+        sPref = getPreferences(MODE_PRIVATE);
+        city = Util.getInstance().loadCity(sPref);
 
         // if city is empty
         // call method
@@ -115,7 +116,22 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
             //update weather
             getWeather();
         }
+    }
 
+    //call dialog for enter city
+    public void getCityName(View view) {
+        dialogOkBtn.setOnClickListener(v -> {
+            //save city in preference
+            if (dialogCityNameET.getText().toString().isEmpty()) {
+                Toast.makeText(MainActivity.this, R.string.enter_city_name, Toast.LENGTH_SHORT).show();
+            } else {
+                //update weather
+                city = dialogCityNameET.getText().toString();
+                getWeather();
+                locationDialog.dismiss();
+            }
+        });
+        locationDialog.show();
     }
 
     public void getWeather() {
@@ -130,10 +146,10 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
         currentWeather = dataTask.getCurrentWeather();
         forecast = dataTask.getForecast();
         if (currentWeather != null) {
-            bindCurrentWeather();
-            bindDetailsCurrent();
+            setCurrentWeather();
+            setDetailsCurrent();
             setDayNight();
-            saveCity();
+            Util.getInstance().saveCity(sPref, city);
         } else {
             Toast.makeText(MainActivity.this, "Wrong City Name", Toast.LENGTH_SHORT).show();
         }
@@ -144,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
             String min = String.valueOf(Math.round(currentForecastDataItem.getMinTemp()));
             String max = String.valueOf(Math.round(currentForecastDataItem.getMaxTemp()));
             currentMaxMinTempTV.setText(String.format("%s / %s°C", max, min));
-            bindGridView();
-            bindGraphView();
+            setGridView();
+            setGraphView();
         } else {
             Toast.makeText(MainActivity.this, "Wrong City Name", Toast.LENGTH_SHORT).show();
         }
@@ -153,41 +169,10 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
 
     @Override
     public void onRequestFailed() {
-        //TODO
+        Toast.makeText(MainActivity.this, "Wrong City Name", Toast.LENGTH_SHORT).show();
     }
 
-
-    //call dialog for enter city
-    public void getCityName(View view) {
-        dialogOkBtn.setOnClickListener(v -> {
-            //save city in preference
-            if (dialogCityNameET.getText().toString().isEmpty()) {
-                Toast.makeText(MainActivity.this, "Enter city name", Toast.LENGTH_SHORT).show();
-            } else {
-                //update weather
-                city = dialogCityNameET.getText().toString();
-                getWeather();
-                locationDialog.dismiss();
-            }
-        });
-        locationDialog.show();
-    }
-
-    public void saveCity() {
-        sPref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_CITY, city);
-        ed.apply();
-        loadCity();
-    }
-
-    public void loadCity() {
-        sPref = getPreferences(MODE_PRIVATE);
-        city = sPref.getString(SAVED_CITY, "");
-    }
-
-
-    private void bindGraphView() {
+    private void setGraphView() {
         //setup GraphView
         SparkView sparkView = findViewById(R.id.sparkView);
         float[] graphData = new float[8];
@@ -199,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
         sparkView.setAdapter(new GraphAdapter(graphData));
     }
 
-    private void bindGridView() {
+    private void setGridView() {
         //setup dailyGridView
         dailyGV.setNumColumns(6);
         //disable scrolling gridView
@@ -209,14 +194,14 @@ public class MainActivity extends AppCompatActivity implements MyEventListener {
     }
 
     //setup current weather
-    private void bindCurrentWeather() {
+    private void setCurrentWeather() {
         cityNameTV.setText(currentWeather.getData().get(0).getCityName());
         DataItem currentData = currentWeather.getData().get(0);
         currentTempTV.setText(String.format(Locale.getDefault(), "%d°", Math.round(currentData.getTemp())));
         currentWeatherTV.setText(currentData.getWeather().getDescription());
     }
 
-    private void bindDetailsCurrent() {
+    private void setDetailsCurrent() {
         preProTV.setText(String.format(Locale.getDefault(), "%d%%", forecast.getData().get(0).getPop()));
         preTV.setText(String.format(Locale.getDefault(), "%.2f %s", currentWeather.getData().get(0).getPrecip(), getString(R.string.mm)));
         windDirTV.setText(String.format(Locale.getDefault(), "%s %s", currentWeather.getData().get(0).getWindCdir(), getString(R.string.wind)));
