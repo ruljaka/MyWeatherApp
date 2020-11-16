@@ -9,13 +9,6 @@ import retrofit2.http.Query;
 
 public interface WeatherApi {
 
-    @GET("get")
-    Call<Forecast> getForecastByLocation(@Query("lat") String lat,
-                                         @Query("lon") String lon,
-                                         @Query("lang") String lang,
-                                         @Query("days") String days,
-                                         @Query("key") String key);
-
     @GET("forecast/daily")
     Call<Forecast> getForecastByCity(@Query("city") String city,
                                      @Query("lang") String lang,
@@ -25,6 +18,5 @@ public interface WeatherApi {
     @GET("current")
     Call<CurrentWeather> getCurrentByCity(@Query("city") String city,
                                           @Query("lang") String lang,
-                                          @Query("days") String days,
                                           @Query("key") String key);
 }

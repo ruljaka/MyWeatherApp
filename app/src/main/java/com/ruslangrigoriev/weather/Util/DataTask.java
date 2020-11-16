@@ -34,12 +34,12 @@ public class DataTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         Call<CurrentWeather> callCurrent = NetworkService.getInstance()
                 .getWeatherApi()
-                .getCurrentByCity(city, lang, DAYS, KEY);
+                .getCurrentByCity(city, lang, KEY);
         try {
             currentWeather = callCurrent.execute().body();
-            Log.d(MY_TAG, "done");
+            Log.d(MY_TAG, " current done");
         } catch (IOException e) {
-            Log.d(MY_TAG, "failure");
+            Log.d(MY_TAG, "current failure");
             e.printStackTrace();
         }
 
@@ -48,23 +48,25 @@ public class DataTask extends AsyncTask<Void, Void, Void> {
                 .getForecastByCity(city, lang, DAYS, KEY);
         try {
             forecast = callForecast.execute().body();
-            Log.d(MY_TAG, "done");
+            Log.d(MY_TAG, "forecast done");
         } catch (IOException e) {
-            Log.d(MY_TAG, "failure");
+            Log.d(MY_TAG, "forecast failure");
             e.printStackTrace();
         }
-
-        Log.d(MY_TAG, "doinDone");
+        Log.d(MY_TAG, "doInBackground Done");
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        Log.d(MY_TAG, "onPost");
+        Log.d(MY_TAG, "onPost Done");
         if (callback != null) {
             callback.onApiDataReceived();
+        } else {
+            callback.onRequestFailed();
         }
     }
+
 
     public Forecast getForecast() {
         return forecast;

@@ -23,4 +23,5 @@
     <string name="today">сегодня</string>
     <string name="weather_icon">weather icon</string>
     <string name="main_image">main_image</string>
+    <string name="up_arrow">up_arrow</string>
 </resources>

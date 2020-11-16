@@ -39,18 +39,11 @@ public class Util {
         ZoneId LondonZoneId = ZoneId.of("Europe/London");
         ZonedDateTime londonZDTSunset = dateTimeSunset.atZone(LondonZoneId);
         ZonedDateTime londonZDTSunrise = dateTimeSunrise.atZone(LondonZoneId);
-        Log.d(MY_TAG, londonZDTSunrise.toString() + "sunrise");
-        Log.d(MY_TAG, londonZDTSunset.toString() + "sunset\n");
-
 
         ZoneId systemZoneId = ZoneId.of(currentWeather.getData().get(0).getTimezone());
         ZonedDateTime systemZDTSunset = londonZDTSunset.withZoneSameInstant(systemZoneId);
         ZonedDateTime systemZDTSunrise = londonZDTSunrise.withZoneSameInstant(systemZoneId);
         ZonedDateTime nowZDT = ZonedDateTime.now().withZoneSameInstant(systemZoneId);
-        Log.d(MY_TAG, systemZDTSunrise.toString() + "sunrise");
-        Log.d(MY_TAG, systemZDTSunset.toString() + "sunset\n");
-
-        Log.d(MY_TAG, nowZDT.toString() + "now");
 
         return systemZDTSunset.isAfter(nowZDT) && systemZDTSunrise.isBefore(nowZDT);
     }

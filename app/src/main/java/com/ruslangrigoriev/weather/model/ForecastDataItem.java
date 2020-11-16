@@ -56,7 +56,7 @@ public class ForecastDataItem {
 	private double maxTemp;
 
 	@SerializedName("snow_depth")
-	private int snowDepth;
+	private double snowDepth;
 
 	@SerializedName("sunset_ts")
 	private int sunsetTs;
@@ -107,7 +107,7 @@ public class ForecastDataItem {
 	private double slp;
 
 	@SerializedName("snow")
-	private int snow;
+	private double snow;
 
 	@SerializedName("wind_cdir_full")
 	private String windCdirFull;
@@ -186,7 +186,7 @@ public class ForecastDataItem {
 		return maxTemp;
 	}
 
-	public int getSnowDepth(){
+	public double getSnowDepth(){
 		return snowDepth;
 	}
 
@@ -254,7 +254,7 @@ public class ForecastDataItem {
 		return slp;
 	}
 
-	public int getSnow(){
+	public double getSnow(){
 		return snow;
 	}
 

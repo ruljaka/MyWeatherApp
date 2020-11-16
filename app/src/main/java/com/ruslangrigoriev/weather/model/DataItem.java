@@ -35,7 +35,7 @@ public class DataItem{
 	private String cityName;
 
 	@SerializedName("h_angle")
-	private int hAngle;
+	private double hAngle;
 
 	@SerializedName("datetime")
 	private String datetime;
@@ -95,7 +95,7 @@ public class DataItem{
 	private double slp;
 
 	@SerializedName("snow")
-	private int snow;
+	private double snow;
 
 	@SerializedName("sunset")
 	private String sunset;
@@ -152,7 +152,7 @@ public class DataItem{
 		return cityName;
 	}
 
-	public int getHAngle(){
+	public double getHAngle(){
 		return hAngle;
 	}
 
@@ -232,7 +232,7 @@ public class DataItem{
 		return slp;
 	}
 
-	public int getSnow(){
+	public double getSnow(){
 		return snow;
 	}
 
