@@ -3,7 +3,6 @@ package com.ruslangrigoriev.weather.Util;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ruslangrigoriev.weather.MyEventListener;
 import com.ruslangrigoriev.weather.model.CurrentWeather;
 import com.ruslangrigoriev.weather.model.Forecast;
 import com.ruslangrigoriev.weather.network.NetworkService;
@@ -19,12 +18,12 @@ public class DataTask extends AsyncTask<Void, Void, Void> {
     private final String lang;
     private final String city;
 
-    private final MyEventListener callback;
+    private final DataListener dataListener;
     private Forecast forecast;
     private CurrentWeather currentWeather;
 
-    public DataTask(MyEventListener cb, String city, String lang) {
-        callback = cb;
+    public DataTask(DataListener dataListener, String city, String lang) {
+        this.dataListener = dataListener;
         this.city = city;
         this.lang = lang;
     }
@@ -60,10 +59,10 @@ public class DataTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         Log.d(MY_TAG, "onPost Done");
-        if (callback != null) {
-            callback.onApiDataReceived();
+        if (dataListener != null) {
+            dataListener.onApiDataReceived();
         } else {
-            callback.onRequestFailed();
+            dataListener.onRequestFailed();
         }
     }
 
@@ -74,5 +73,11 @@ public class DataTask extends AsyncTask<Void, Void, Void> {
 
     public CurrentWeather getCurrentWeather() {
         return currentWeather;
+    }
+
+    public interface DataListener {
+        void onApiDataReceived();
+
+        void onRequestFailed();
     }
 }

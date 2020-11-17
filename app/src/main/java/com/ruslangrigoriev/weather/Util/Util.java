@@ -1,10 +1,7 @@
 package com.ruslangrigoriev.weather.Util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import com.ruslangrigoriev.weather.MyEventListener;
 import com.ruslangrigoriev.weather.model.CurrentWeather;
 
 import java.time.LocalDate;
@@ -49,7 +46,7 @@ public class Util {
     }
 
     public String loadCity(SharedPreferences sPref) {
-       return sPref.getString(SAVED_CITY, "");
+        return sPref.getString(SAVED_CITY, "");
     }
 
     public void saveCity(SharedPreferences sPref, String city) {
