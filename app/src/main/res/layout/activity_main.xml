@@ -8,48 +8,52 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
-
-
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/sliding_layout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
-        android:gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:umanoDragView="@+id/dragView"
-        app:umanoFadeColor="#56050505"
-        app:umanoOverlay="true"
-        app:umanoPanelHeight="206dp"
-        app:umanoParallaxOffset="0dp"
-        app:umanoScrollableView="@+id/list"
-        app:umanoShadowHeight="0dp">
-
-        <!-- MAIN CONTENT -->
-        <FrameLayout
-            android:id="@+id/back_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+        android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/swipe_fragment"
+            android:id="@+id/head_fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+            android:layout_height="match_parent">
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            <com.sothree.slidinguppanel.SlidingUpPanelLayout
+                android:id="@+id/sliding_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:gravity="bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.9"
+                app:umanoDragView="@+id/dragView"
+                app:umanoFadeColor="#56050505"
+                app:umanoOverlay="true"
+                app:umanoPanelHeight="206dp"
+                app:umanoParallaxOffset="0dp"
+                app:umanoScrollableView="@+id/list"
+                app:umanoShadowHeight="0dp">
 
-    <FrameLayout
-        android:id="@+id/head_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+                <!-- MAIN CONTENT -->
+                <FrameLayout
+                    android:id="@+id/back_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
 
+                <FrameLayout
+                    android:id="@+id/swipe_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+            </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

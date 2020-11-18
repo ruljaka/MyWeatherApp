@@ -23,10 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:layout_marginTop="16dp"
+        android:focusableInTouchMode="false"
+        android:nestedScrollingEnabled="false"
         android:numColumns="1"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
+        android:touchscreenBlocksFocus="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/up_arrow">

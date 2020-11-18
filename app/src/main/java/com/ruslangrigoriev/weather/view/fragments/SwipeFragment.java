@@ -128,8 +128,7 @@ public class SwipeFragment extends Fragment {
                     forecast.getData().get(0).getPop()));
             //set dailyGridView
             dailyGV.setNumColumns(6);
-            //disable scrolling gridView
-            dailyGV.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
+            dailyGV.setEnabled(false);
             DailyAdapter dailyAdapterGridView = new DailyAdapter(getContext(), (ArrayList<ForecastDataItem>) forecast.getData());
             dailyGV.setAdapter(dailyAdapterGridView);
             //set GraphView
