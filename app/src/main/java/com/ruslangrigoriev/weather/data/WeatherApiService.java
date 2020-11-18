@@ -1,13 +1,15 @@
-package com.ruslangrigoriev.weather.network;
+package com.ruslangrigoriev.weather.data;
 
-import com.ruslangrigoriev.weather.model.CurrentWeather;
-import com.ruslangrigoriev.weather.model.Forecast;
+
+
+import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
+import com.ruslangrigoriev.weather.data.entities.Forecast;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface WeatherApi {
+public interface WeatherApiService {
 
     @GET("forecast/daily")
     Call<Forecast> getForecastByCity(@Query("city") String city,

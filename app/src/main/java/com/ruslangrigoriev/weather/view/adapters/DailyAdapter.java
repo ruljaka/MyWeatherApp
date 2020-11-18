@@ -1,4 +1,4 @@
-package com.ruslangrigoriev.weather.adapter;
+package com.ruslangrigoriev.weather.view.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ruslangrigoriev.weather.R;
-import com.ruslangrigoriev.weather.model.ForecastDataItem;
+import com.ruslangrigoriev.weather.data.entities.ForecastDataItem;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

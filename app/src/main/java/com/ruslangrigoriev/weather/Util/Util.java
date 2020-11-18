@@ -1,8 +1,10 @@
 package com.ruslangrigoriev.weather.Util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.ruslangrigoriev.weather.model.CurrentWeather;
+import com.ruslangrigoriev.weather.App;
+import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,12 +47,13 @@ public class Util {
         return systemZDTSunset.isAfter(nowZDT) && systemZDTSunrise.isBefore(nowZDT);
     }
 
-    public String loadCity(SharedPreferences sPref) {
-        return sPref.getString(SAVED_CITY, "");
+    public String getCityName() {
+        SharedPreferences sharedPreferences = App.getInstance().getSharedPreferences("MyPreferences",Context.MODE_PRIVATE);
+        return sharedPreferences.getString(SAVED_CITY, "");
     }
 
-    public void saveCity(SharedPreferences sPref, String city) {
-        SharedPreferences.Editor ed = sPref.edit();
+    public void saveCityName(String city) {
+        SharedPreferences.Editor ed = App.getInstance().getSharedPreferences("MyPreferences",Context.MODE_PRIVATE).edit();
         ed.putString(SAVED_CITY, city);
         ed.apply();
     }

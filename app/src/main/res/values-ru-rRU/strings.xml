@@ -24,4 +24,5 @@
     <string name="weather_icon">weather icon</string>
     <string name="main_image">main_image</string>
     <string name="up_arrow">up_arrow</string>
+    <string name="network_error">Ошибка сети</string>
 </resources>

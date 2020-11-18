@@ -1,4 +1,4 @@
-package com.ruslangrigoriev.weather.model;
+package com.ruslangrigoriev.weather.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 

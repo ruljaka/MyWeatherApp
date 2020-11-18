@@ -1,4 +1,4 @@
-package com.ruslangrigoriev.weather.adapter;
+package com.ruslangrigoriev.weather.view.adapters;
 
 import com.robinhood.spark.SparkAdapter;
 

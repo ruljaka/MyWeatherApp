@@ -1,4 +1,4 @@
-package com.ruslangrigoriev.weather.fragments;
+package com.ruslangrigoriev.weather.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,7 +54,7 @@ public class EnterCityDialog extends DialogFragment {
             dialogCityNameET.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.dialog_day_enter_text));
             dialogOkBtn.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.dialog_day_button));
         }
-        dialogOkBtn.setOnClickListener(v -> dialogListener.onDialogOkBtnClick(dialogCityNameET.getText().toString()));
+        dialogOkBtn.setOnClickListener(v -> dialogListener.onDialogOkBtnClick(dialogCityNameET.getText().toString(),getDialog()));
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
@@ -74,6 +74,6 @@ public class EnterCityDialog extends DialogFragment {
     }
 
     public interface DialogListener {
-        void onDialogOkBtnClick(String cityName);
+        void onDialogOkBtnClick(String cityName, Dialog dialog);
     }
 }
