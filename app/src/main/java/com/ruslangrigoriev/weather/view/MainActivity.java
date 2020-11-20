@@ -1,6 +1,8 @@
 package com.ruslangrigoriev.weather.view;
 
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,19 +37,20 @@ public class MainActivity extends AppCompatActivity implements EnterCityDialog.D
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        weatherDataViewModel = new ViewModelProvider(this).get(WeatherDataViewModel.class);
+        weatherDataViewModel = new ViewModelProvider(this)
+                .get(WeatherDataViewModel.class);
 
-        headFragment = HeadFragment.newInstance(weatherDataViewModel);
+        headFragment = HeadFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.head_fragment, headFragment, HeadFragment.HEAD_TAG)
                 .commit();
-        backFragment = BackFragment.newInstance(weatherDataViewModel);
+        backFragment = BackFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.back_fragment, backFragment, BackFragment.BACK_TAG)
                 .commit();
-        swipeFragment = SwipeFragment.newInstance(weatherDataViewModel);
+        swipeFragment = SwipeFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.swipe_fragment, swipeFragment, SwipeFragment.SWIPE_TAG)
@@ -82,7 +85,13 @@ public class MainActivity extends AppCompatActivity implements EnterCityDialog.D
             public void onPanelStateChanged(View panel,
                                             SlidingUpPanelLayout.PanelState previousState,
                                             SlidingUpPanelLayout.PanelState newState) {
-                swipeRefreshLayout.setEnabled(newState != SlidingUpPanelLayout.PanelState.EXPANDED);
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    swipeRefreshLayout.setEnabled(false);
+                    swipeFragment.upArrow.setImageResource(R.drawable.ic_down_arrow);
+                } else {
+                    swipeRefreshLayout.setEnabled(true);
+                    swipeFragment.upArrow.setImageResource(R.drawable.ic_up_arrow);
+                }
             }
         });
     }

@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,14 +45,14 @@ public class SwipeFragment extends Fragment {
     private TextView visibilityTV;
     private TextView pressureTV;
     private SparkView sparkView;
+    public ImageView upArrow;
     public WeatherDataViewModel weatherDataViewModel;
 
-    public SwipeFragment(WeatherDataViewModel weatherDataViewModel) {
-        this.weatherDataViewModel = weatherDataViewModel;
+    public SwipeFragment() {
     }
 
-    public static SwipeFragment newInstance(WeatherDataViewModel weatherDataViewModel) {
-        return new SwipeFragment(weatherDataViewModel);
+    public static SwipeFragment newInstance() {
+        return new SwipeFragment();
     }
 
     @Override
@@ -81,7 +82,9 @@ public class SwipeFragment extends Fragment {
         visibilityTV = view.findViewById(R.id.visibilityTV);
         pressureTV = view.findViewById(R.id.pressureTV);
         sparkView = view.findViewById(R.id.sparkView);
+        upArrow = view.findViewById(R.id.up_arrow);
 
+        weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), new Observer<CurrentWeather>() {
             @Override
             public void onChanged(CurrentWeather currentWeather) {

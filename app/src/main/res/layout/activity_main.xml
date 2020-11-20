@@ -31,7 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.9"
                 app:umanoDragView="@+id/dragView"
-                app:umanoFadeColor="#56050505"
+                app:umanoFadeColor="#70050505"
                 app:umanoOverlay="true"
                 app:umanoPanelHeight="206dp"
                 app:umanoParallaxOffset="0dp"

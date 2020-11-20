@@ -39,7 +39,7 @@ public class WeatherApiInteractor {
                             if (currentWeather != null) {
                                 weatherRepository.setCurrentWeather(currentWeather);
                                 dataCallback.onCurrentSuccess(weatherRepository.getCurrentWeather());
-                                Log.d(MY_TAG, " current done");
+                                //Log.d(MY_TAG, " getWeatherData current ");
                             } else {
                                 Toast.makeText(App.getInstance().getApplicationContext(), "Wrong city name", Toast.LENGTH_SHORT).show();
                             }
@@ -63,7 +63,7 @@ public class WeatherApiInteractor {
                             if(forecast != null) {
                                 weatherRepository.setForecast(forecast);
                                 dataCallback.onForecastSuccess(weatherRepository.getForecast());
-                                Log.d(MY_TAG, "forecast done");
+                                //Log.d(MY_TAG, "getWeatherData forecast");
                             } else {
                                 Toast.makeText(App.getInstance().getApplicationContext(), "Wrong city name", Toast.LENGTH_SHORT).show();
                             }

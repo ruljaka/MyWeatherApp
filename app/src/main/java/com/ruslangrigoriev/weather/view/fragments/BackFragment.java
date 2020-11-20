@@ -28,12 +28,11 @@ public class BackFragment extends Fragment {
     private ConstraintLayout backCL;
     public WeatherDataViewModel weatherDataViewModel;
 
-    public BackFragment(WeatherDataViewModel weatherDataViewModel) {
-        this.weatherDataViewModel = weatherDataViewModel;
+    public BackFragment() {
     }
 
-    public static BackFragment newInstance(WeatherDataViewModel weatherDataViewModel) {
-        return new BackFragment(weatherDataViewModel);
+    public static BackFragment newInstance() {
+        return new BackFragment();
     }
 
     @Override
@@ -54,6 +53,7 @@ public class BackFragment extends Fragment {
         backIV = view.findViewById(R.id.back_image);
         backCL = view.findViewById(R.id.back_CL);
 
+        weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), currentWeather -> {
             if(Util.getInstance().isDay(currentWeather)){
                 backCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_day_background));

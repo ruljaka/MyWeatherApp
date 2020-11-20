@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
@@ -33,12 +34,11 @@ public class HeadFragment extends Fragment {
     public WeatherDataViewModel weatherDataViewModel;
     boolean isDay = true;
 
-    public HeadFragment(WeatherDataViewModel weatherDataViewModel) {
-        this.weatherDataViewModel = weatherDataViewModel;
+    public HeadFragment() {
     }
 
-    public static HeadFragment newInstance(WeatherDataViewModel weatherDataViewModel) {
-        return new HeadFragment(weatherDataViewModel);
+    public static HeadFragment newInstance() {
+        return new HeadFragment();
     }
 
     @Override
@@ -62,6 +62,7 @@ public class HeadFragment extends Fragment {
         currentMaxMinTempTV = view.findViewById(R.id.currentMaxMinTempTV);
         locationIB = view.findViewById(R.id.locationImBtn);
 
+        weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), currentWeather -> {
             isDay = Util.getInstance().isDay(currentWeather);
             cityNameTV.setText(currentWeather.getData().get(0).getCityName());
