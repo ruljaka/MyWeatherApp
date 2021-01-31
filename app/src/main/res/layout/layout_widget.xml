@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widgetLL"
-    android:layout_width="150dp"
+    android:layout_width="140dp"
     android:layout_height="100dp"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
 
     <TextView
         android:id="@+id/widgetDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/empty"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/widgetWeatherDescriptionTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:layout_marginStart="8dp"
+        android:text="@string/empty"
         android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textSize="12sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/widgetTempTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:layout_marginStart="8dp"
+        android:text="@string/empty"
         android:textColor="#FFFFFF"
-        android:textSize="36sp"
-        android:textStyle="bold" />
+        android:textSize="40sp"
+        android:textStyle="normal" />
 </LinearLayout>

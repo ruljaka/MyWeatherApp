@@ -24,6 +24,7 @@
     <string name="main_image">main_image</string>
     <string name="up_arrow">up_arrow</string>
     <string name="network_error">Network error</string>
+    <string name="wrong_city">Wrong city name</string>
 
     <integer-array name="weather_icons">
 

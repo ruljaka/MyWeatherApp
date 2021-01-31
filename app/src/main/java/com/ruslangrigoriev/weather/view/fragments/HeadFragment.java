@@ -15,7 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
+import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
 import com.ruslangrigoriev.weather.data.entities.DataItem;
+import com.ruslangrigoriev.weather.data.entities.Forecast;
 import com.ruslangrigoriev.weather.data.entities.ForecastDataItem;
 import com.ruslangrigoriev.weather.view.EnterCityDialog;
 import com.ruslangrigoriev.weather.viewmodel.WeatherDataViewModel;
@@ -63,14 +65,16 @@ public class HeadFragment extends Fragment {
         locationIB = view.findViewById(R.id.locationImBtn);
 
         weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
-        weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), currentWeather -> {
+
+        weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), (CurrentWeather currentWeather) -> {
             isDay = Util.getInstance().isDay(currentWeather);
             cityNameTV.setText(currentWeather.getData().get(0).getCityName());
             DataItem currentData = currentWeather.getData().get(0);
             currentTempTV.setText(String.format(Locale.getDefault(), "%d°", Math.round(currentData.getTemp())));
             currentWeatherTV.setText(currentData.getWeather().getDescription());
         });
-        weatherDataViewModel.getForecast().observe(getViewLifecycleOwner(), forecast -> {
+
+        weatherDataViewModel.getForecast().observe(getViewLifecycleOwner(), (Forecast forecast) -> {
             ForecastDataItem currentForecastDataItem = forecast.getData().get(0);
             String min = String.valueOf(Math.round(currentForecastDataItem.getMinTemp()));
             String max = String.valueOf(Math.round(currentForecastDataItem.getMaxTemp()));

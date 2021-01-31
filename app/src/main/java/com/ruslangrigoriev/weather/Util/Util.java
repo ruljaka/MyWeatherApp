@@ -13,7 +13,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class Util {
-    public static final String MY_TAG = "MyTag";
+
     private final String SAVED_CITY = "saved_city";
     private static Util instance;
 
@@ -48,12 +48,12 @@ public class Util {
     }
 
     public String getCityName() {
-        SharedPreferences sharedPreferences = App.getInstance().getSharedPreferences("MyPreferences",Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = App.getInstance().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         return sharedPreferences.getString(SAVED_CITY, "");
     }
 
     public void saveCityName(String city) {
-        SharedPreferences.Editor ed = App.getInstance().getSharedPreferences("MyPreferences",Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor ed = App.getInstance().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE).edit();
         ed.putString(SAVED_CITY, city);
         ed.apply();
     }
