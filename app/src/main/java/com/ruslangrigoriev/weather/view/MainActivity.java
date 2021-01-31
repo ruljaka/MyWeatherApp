@@ -78,13 +78,14 @@ public class MainActivity extends AppCompatActivity implements EnterCityDialog.D
         slidingPL.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-
+                swipeFragment.upArrow.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onPanelStateChanged(View panel,
                                             SlidingUpPanelLayout.PanelState previousState,
                                             SlidingUpPanelLayout.PanelState newState) {
+                swipeFragment.upArrow.setVisibility(View.VISIBLE);
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
                     swipeRefreshLayout.setEnabled(false);
                     swipeFragment.upArrow.setImageResource(R.drawable.ic_down_arrow);
@@ -105,4 +106,5 @@ public class MainActivity extends AppCompatActivity implements EnterCityDialog.D
             dialog.dismiss();
         }
     }
+
 }

@@ -1,26 +1,23 @@
 package com.ruslangrigoriev.weather.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.robinhood.spark.SparkView;
 import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
-import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
 import com.ruslangrigoriev.weather.data.entities.ForecastDataItem;
 import com.ruslangrigoriev.weather.view.adapters.DailyAdapter;
 import com.ruslangrigoriev.weather.view.adapters.GraphAdapter;
@@ -85,43 +82,40 @@ public class SwipeFragment extends Fragment {
         upArrow = view.findViewById(R.id.up_arrow);
 
         weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
-        weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), new Observer<CurrentWeather>() {
-            @Override
-            public void onChanged(CurrentWeather currentWeather) {
-                preTV.setText(String.format(Locale.getDefault()
-                        , "%.2f %s"
-                        , currentWeather.getData().get(0).getPrecip()
-                        , SwipeFragment.this.getString(R.string.mm)));
-                windDirTV.setText(String.format(Locale.getDefault()
-                        , "%s %s"
-                        , currentWeather.getData().get(0).getWindCdir()
-                        , SwipeFragment.this.getString(R.string.wind)));
-                windSpdTV.setText(String.format(Locale.getDefault(),
-                        "%.1f %s",
-                        currentWeather.getData().get(0).getWindSpd(),
-                        SwipeFragment.this.getString(R.string.m_s)));
-                perTempTV.setText(String.format(Locale.getDefault(),
-                        "%d°C",
-                        Math.round(currentWeather.getData().get(0).getAppTemp())));
-                humidityTV.setText(String.format(Locale.getDefault(),
-                        "%d%%",
-                        Math.round(currentWeather.getData().get(0).getRh())));
-                visibilityTV.setText(String.format(Locale.getDefault(),
-                        "%.1f %s",
-                        currentWeather.getData().get(0).getVis(),
-                        SwipeFragment.this.getString(R.string.km)));
-                uvTV.setText(String.format(Locale.getDefault(),
-                        "%.1f",
-                        currentWeather.getData().get(0).getUv()));
-                pressureTV.setText(String.format(Locale.getDefault(),
-                        "%d %s",
-                        (int) currentWeather.getData().get(0).getPres(),
-                        SwipeFragment.this.getString(R.string.mb)));
-                if (Util.getInstance().isDay(currentWeather)) {
-                    swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_day));
-                } else {
-                    swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_night));
-                }
+        weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), currentWeather -> {
+            preTV.setText(String.format(Locale.getDefault()
+                    , "%.2f %s"
+                    , currentWeather.getData().get(0).getPrecip()
+                    , SwipeFragment.this.getString(R.string.mm)));
+            windDirTV.setText(String.format(Locale.getDefault()
+                    , "%s %s"
+                    , currentWeather.getData().get(0).getWindCdir()
+                    , SwipeFragment.this.getString(R.string.wind)));
+            windSpdTV.setText(String.format(Locale.getDefault(),
+                    "%.1f %s",
+                    currentWeather.getData().get(0).getWindSpd(),
+                    SwipeFragment.this.getString(R.string.m_s)));
+            perTempTV.setText(String.format(Locale.getDefault(),
+                    "%d°C",
+                    Math.round(currentWeather.getData().get(0).getAppTemp())));
+            humidityTV.setText(String.format(Locale.getDefault(),
+                    "%d%%",
+                    Math.round(currentWeather.getData().get(0).getRh())));
+            visibilityTV.setText(String.format(Locale.getDefault(),
+                    "%.1f %s",
+                    currentWeather.getData().get(0).getVis(),
+                    SwipeFragment.this.getString(R.string.km)));
+            uvTV.setText(String.format(Locale.getDefault(),
+                    "%.1f",
+                    currentWeather.getData().get(0).getUv()));
+            pressureTV.setText(String.format(Locale.getDefault(),
+                    "%d %s",
+                    (int) currentWeather.getData().get(0).getPres(),
+                    SwipeFragment.this.getString(R.string.mb)));
+            if (Util.getInstance().isDay(currentWeather)) {
+                swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_day));
+            } else {
+                swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_night));
             }
         });
 
