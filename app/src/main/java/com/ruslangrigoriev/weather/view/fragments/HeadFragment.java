@@ -17,7 +17,7 @@ import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
 import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
 import com.ruslangrigoriev.weather.data.entities.DataItem;
-import com.ruslangrigoriev.weather.data.entities.Forecast;
+import com.ruslangrigoriev.weather.data.entities.ForecastWeather;
 import com.ruslangrigoriev.weather.data.entities.ForecastDataItem;
 import com.ruslangrigoriev.weather.view.EnterCityDialog;
 import com.ruslangrigoriev.weather.viewmodel.WeatherDataViewModel;
@@ -67,18 +67,22 @@ public class HeadFragment extends Fragment {
         weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
 
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), (CurrentWeather currentWeather) -> {
-            isDay = Util.getInstance().isDay(currentWeather);
-            cityNameTV.setText(currentWeather.getData().get(0).getCityName());
-            DataItem currentData = currentWeather.getData().get(0);
-            currentTempTV.setText(String.format(Locale.getDefault(), "%d°", Math.round(currentData.getTemp())));
-            currentWeatherTV.setText(currentData.getWeather().getDescription());
+            if(currentWeather != null) {
+                isDay = Util.getInstance().isDay(currentWeather);
+                cityNameTV.setText(currentWeather.getData().get(0).getCityName());
+                DataItem currentData = currentWeather.getData().get(0);
+                currentTempTV.setText(String.format(Locale.getDefault(), "%d°", Math.round(currentData.getTemp())));
+                currentWeatherTV.setText(currentData.getWeather().getDescription());
+            }
         });
 
-        weatherDataViewModel.getForecast().observe(getViewLifecycleOwner(), (Forecast forecast) -> {
-            ForecastDataItem currentForecastDataItem = forecast.getData().get(0);
-            String min = String.valueOf(Math.round(currentForecastDataItem.getMinTemp()));
-            String max = String.valueOf(Math.round(currentForecastDataItem.getMaxTemp()));
-            currentMaxMinTempTV.setText(String.format("%s / %s°C", max, min));
+        weatherDataViewModel.getForecast().observe(getViewLifecycleOwner(), (ForecastWeather forecast) -> {
+            if(forecast != null) {
+                ForecastDataItem currentForecastDataItem = forecast.getData().get(0);
+                String min = String.valueOf(Math.round(currentForecastDataItem.getMinTemp()));
+                String max = String.valueOf(Math.round(currentForecastDataItem.getMaxTemp()));
+                currentMaxMinTempTV.setText(String.format("%s / %s°C", max, min));
+            }
         });
 
         weatherDataViewModel.getError().observe(getViewLifecycleOwner(), error -> Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
@@ -86,6 +90,7 @@ public class HeadFragment extends Fragment {
         locationIB.setOnClickListener(v -> {
             locationDialog = new EnterCityDialog(isDay);
             locationDialog.show(getActivity().getSupportFragmentManager(), "showDialog");
+
         });
     }
 }

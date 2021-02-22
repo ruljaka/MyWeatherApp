@@ -2,8 +2,15 @@ package com.ruslangrigoriev.weather;
 
 import android.app.Application;
 
-import com.ruslangrigoriev.weather.data.WeatherApiService;
-import com.ruslangrigoriev.weather.data.WeatherRepository;
+import androidx.room.Room;
+
+import com.ruslangrigoriev.weather.domain.WeatherApiService;
+import com.ruslangrigoriev.weather.domain.WeatherDAO;
+import com.ruslangrigoriev.weather.domain.WeatherDataBase;
+import com.ruslangrigoriev.weather.domain.WeatherRepository;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -12,25 +19,30 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class App extends Application {
-    private static App instance;
-    private static final String BASE_URL = "https://api.weatherbit.io/v2.0/";
-    public static final String MY_TAG = "MyTag";
 
-    public WeatherApiService weatherApiService;
-    //public WeatherApiInteractor weatherApiInteractor;
-    public WeatherRepository weatherRepository = new WeatherRepository();
+    private static final String BASE_URL = "https://api.weatherbit.io/v2.0/";
+    private static final int NUMBER_OF_THREADS = 4;
+
+    private static App instance;
 
     public static App getInstance() {
         return instance;
     }
 
+    public WeatherApiService weatherApiService;
+    public WeatherDAO weatherDAO;
+    public WeatherDataBase weatherDataBase;
+    public WeatherRepository weatherRepository;
+    public final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+
     @Override
     public void onCreate() {
-        //Log.d(MY_TAG,"App onCreate");
         super.onCreate();
         instance = this;
+        initRoom();
         initRetrofit();
-        //initInteractor();
+        this.weatherRepository = new WeatherRepository();
     }
 
     private void initRetrofit() {
@@ -50,7 +62,19 @@ public class App extends Application {
                 .create(WeatherApiService.class);
     }
 
-    /*private void initInteractor() {
-        weatherApiInteractor = new WeatherApiInteractor(weatherApiService, weatherRepository);
-    }*/
+    private void initRoom() {
+        weatherDataBase = Room.databaseBuilder(getApplicationContext(),
+                WeatherDataBase.class, "weather_database")
+                .fallbackToDestructiveMigration()
+                .build();
+        weatherDAO = weatherDataBase.getWeatherDAO();
+    }
+
+    public WeatherDAO getWeatherDAO() {
+        return weatherDAO;
+    }
+
+    public WeatherRepository getWeatherRepository() {
+        return weatherRepository;
+    }
 }

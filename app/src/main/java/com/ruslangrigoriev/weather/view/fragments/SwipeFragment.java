@@ -83,59 +83,64 @@ public class SwipeFragment extends Fragment {
 
         weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), currentWeather -> {
-            preTV.setText(String.format(Locale.getDefault()
-                    , "%.2f %s"
-                    , currentWeather.getData().get(0).getPrecip()
-                    , SwipeFragment.this.getString(R.string.mm)));
-            windDirTV.setText(String.format(Locale.getDefault()
-                    , "%s %s"
-                    , currentWeather.getData().get(0).getWindCdir()
-                    , SwipeFragment.this.getString(R.string.wind)));
-            windSpdTV.setText(String.format(Locale.getDefault(),
-                    "%.1f %s",
-                    currentWeather.getData().get(0).getWindSpd(),
-                    SwipeFragment.this.getString(R.string.m_s)));
-            perTempTV.setText(String.format(Locale.getDefault(),
-                    "%d°C",
-                    Math.round(currentWeather.getData().get(0).getAppTemp())));
-            humidityTV.setText(String.format(Locale.getDefault(),
-                    "%d%%",
-                    Math.round(currentWeather.getData().get(0).getRh())));
-            visibilityTV.setText(String.format(Locale.getDefault(),
-                    "%.1f %s",
-                    currentWeather.getData().get(0).getVis(),
-                    SwipeFragment.this.getString(R.string.km)));
-            uvTV.setText(String.format(Locale.getDefault(),
-                    "%.1f",
-                    currentWeather.getData().get(0).getUv()));
-            pressureTV.setText(String.format(Locale.getDefault(),
-                    "%d %s",
-                    (int) currentWeather.getData().get(0).getPres(),
-                    SwipeFragment.this.getString(R.string.mb)));
-            if (Util.getInstance().isDay(currentWeather)) {
-                swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_day));
-            } else {
-                swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_night));
+            if(currentWeather != null) {
+                preTV.setText(String.format(Locale.getDefault()
+                        , "%.2f %s"
+                        , currentWeather.getData().get(0).getPrecip()
+                        , SwipeFragment.this.getString(R.string.mm)));
+                windDirTV.setText(String.format(Locale.getDefault()
+                        , "%s %s"
+                        , currentWeather.getData().get(0).getWindCdir()
+                        , SwipeFragment.this.getString(R.string.wind)));
+                windSpdTV.setText(String.format(Locale.getDefault(),
+                        "%.1f %s",
+                        currentWeather.getData().get(0).getWindSpd(),
+                        SwipeFragment.this.getString(R.string.m_s)));
+                perTempTV.setText(String.format(Locale.getDefault(),
+                        "%d°C",
+                        Math.round(currentWeather.getData().get(0).getAppTemp())));
+                humidityTV.setText(String.format(Locale.getDefault(),
+                        "%d%%",
+                        Math.round(currentWeather.getData().get(0).getRh())));
+                visibilityTV.setText(String.format(Locale.getDefault(),
+                        "%.1f %s",
+                        currentWeather.getData().get(0).getVis(),
+                        SwipeFragment.this.getString(R.string.km)));
+                uvTV.setText(String.format(Locale.getDefault(),
+                        "%.1f",
+                        currentWeather.getData().get(0).getUv()));
+                pressureTV.setText(String.format(Locale.getDefault(),
+                        "%d %s",
+                        (int) currentWeather.getData().get(0).getPres(),
+                        SwipeFragment.this.getString(R.string.mb)));
+                if (Util.getInstance().isDay(currentWeather)) {
+                    swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_day));
+                } else {
+                    swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_night));
+                }
             }
         });
 
+
         weatherDataViewModel.getForecast().observe(getViewLifecycleOwner(), forecast -> {
-            preProTV.setText(String.format(Locale.getDefault(),
-                    "%d%%",
-                    forecast.getData().get(0).getPop()));
-            //set dailyGridView
-            dailyGV.setNumColumns(6);
-            dailyGV.setEnabled(false);
-            DailyAdapter dailyAdapterGridView = new DailyAdapter(getContext(), (ArrayList<ForecastDataItem>) forecast.getData());
-            dailyGV.setAdapter(dailyAdapterGridView);
-            //set GraphView
-            float[] graphData = new float[8];
-            for (int i = 1; i < forecast.getData().size() + 1; i++) {
-                graphData[i] = (float) forecast.getData().get(i - 1).getMaxTemp();
+            if(forecast != null) {
+                preProTV.setText(String.format(Locale.getDefault(),
+                        "%d%%",
+                        forecast.getData().get(0).getPop()));
+                //set dailyGridView
+                dailyGV.setNumColumns(6);
+                dailyGV.setEnabled(false);
+                DailyAdapter dailyAdapterGridView = new DailyAdapter(getContext(), (ArrayList<ForecastDataItem>) forecast.getData());
+                dailyGV.setAdapter(dailyAdapterGridView);
+                //set GraphView
+                float[] graphData = new float[8];
+                for (int i = 1; i < forecast.getData().size() + 1; i++) {
+                    graphData[i] = (float) forecast.getData().get(i - 1).getMaxTemp();
+                }
+                graphData[0] = (float) forecast.getData().get(0).getMaxTemp();
+                graphData[7] = (float) forecast.getData().get(5).getMaxTemp();
+                sparkView.setAdapter(new GraphAdapter(graphData));
             }
-            graphData[0] = (float) forecast.getData().get(0).getMaxTemp();
-            graphData[7] = (float) forecast.getData().get(5).getMaxTemp();
-            sparkView.setAdapter(new GraphAdapter(graphData));
         });
     }
 }

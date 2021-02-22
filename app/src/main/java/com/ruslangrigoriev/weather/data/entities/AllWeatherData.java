@@ -1,27 +1,20 @@
 package com.ruslangrigoriev.weather.data.entities;
 
 public class AllWeatherData {
-    private CurrentWeather currentWeather;
-    private Forecast forecast;
+    private final CurrentWeather currentWeather;
+    private final ForecastWeather forecastWeather;
 
-    public AllWeatherData(CurrentWeather currentWeather, Forecast forecast) {
+    public AllWeatherData(CurrentWeather currentWeather, ForecastWeather forecastWeather) {
         this.currentWeather = currentWeather;
-        this.forecast = forecast;
+        this.forecastWeather = forecastWeather;
     }
 
     public CurrentWeather getCurrentWeather() {
         return currentWeather;
     }
 
-    public void setCurrentWeather(CurrentWeather currentWeather) {
-        this.currentWeather = currentWeather;
+    public ForecastWeather getForecastWeather() {
+        return forecastWeather;
     }
 
-    public Forecast getForecast() {
-        return forecast;
-    }
-
-    public void setForecast(Forecast forecast) {
-        this.forecast = forecast;
-    }
 }

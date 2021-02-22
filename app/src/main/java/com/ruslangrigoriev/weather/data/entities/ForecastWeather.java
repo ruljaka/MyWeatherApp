@@ -5,19 +5,19 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.SerializedName;
-import com.ruslangrigoriev.weather.data.DataItemConverter;
+import com.ruslangrigoriev.weather.data.ForecastDataItemConverter;
 
 import java.util.List;
 
-@Entity(tableName = "current_weather")
-public class CurrentWeather {
+@Entity(tableName = "forecastWeather")
+public class ForecastWeather {
 
     @PrimaryKey
     private int id = 1;
 
     @SerializedName("data")
-    @TypeConverters(DataItemConverter.class)
-    private List<DataItem> data;
+    @TypeConverters(ForecastDataItemConverter.class)
+    private List<ForecastDataItem> data;
 
     public int getId() {
         return id;
@@ -27,11 +27,11 @@ public class CurrentWeather {
         this.id = id;
     }
 
-    public List<DataItem> getData() {
+    public List<ForecastDataItem> getData() {
         return data;
     }
 
-    public void setData(List<DataItem> data) {
+    public void setData(List<ForecastDataItem> data) {
         this.data = data;
     }
 }

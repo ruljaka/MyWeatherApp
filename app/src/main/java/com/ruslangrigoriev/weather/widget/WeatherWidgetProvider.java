@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.lifecycle.LiveData;
+
 import com.ruslangrigoriev.weather.App;
 import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
@@ -42,7 +44,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Log.d(MY_TAG, "widget onUpdate");
+        //Log.d(MY_TAG, "widget onUpdate");
         if (!Util.getInstance().getCityName().equals("")) {
             for (int widgetId : appWidgetIds) {
                 updateWidgetFromAPI(context, appWidgetManager, widgetId);
@@ -95,12 +97,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                     @Override
                     public void onSuccess(@NonNull Response<CurrentWeather> currentWeatherResponse) {
                         bindWidgetViews(currentWeatherResponse.body(), remoteViews, appWidgetManager, widgetId);
-                        Log.d(MY_TAG, "updateWidget from API");
+                        //Log.d(MY_TAG, "updateWidget from API");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d(MY_TAG, "updateWidget from API  error");
+                        //Log.d(MY_TAG, "updateWidget from API  error");
                     }
                 });
 
@@ -115,9 +117,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         PendingIntent pIntent = PendingIntent.getActivity(context, widgetId,
                 mainIntent, 0);
         remoteViews.setOnClickPendingIntent(R.id.widgetLL, pIntent);
-        CurrentWeather currentWeather = App.getInstance().weatherRepository.getCurrentWeather();
-        bindWidgetViews(currentWeather, remoteViews, appWidgetManager, widgetId);
-        Log.d(MY_TAG, "updateWidget from Repo");
+
+        LiveData<CurrentWeather> currentWeather = App.getInstance().weatherRepository.getCurrentWeather();
+        if(currentWeather.getValue() != null) {
+            bindWidgetViews(currentWeather.getValue(), remoteViews, appWidgetManager, widgetId);
+            //Log.d(MY_TAG, "updateWidget from Repo");
+        }
     }
 
     private void bindWidgetViews(CurrentWeather currentWeather, RemoteViews remoteViews, AppWidgetManager appWidgetManager, int widgetId) {

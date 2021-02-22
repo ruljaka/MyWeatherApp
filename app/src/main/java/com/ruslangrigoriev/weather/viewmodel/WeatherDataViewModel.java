@@ -13,19 +13,16 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 
 import com.ruslangrigoriev.weather.App;
-import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
-import com.ruslangrigoriev.weather.data.WeatherRepository;
+import com.ruslangrigoriev.weather.domain.WeatherRepository;
 import com.ruslangrigoriev.weather.data.entities.AllWeatherData;
 import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
-import com.ruslangrigoriev.weather.data.entities.Forecast;
+import com.ruslangrigoriev.weather.data.entities.ForecastWeather;
 import com.ruslangrigoriev.weather.widget.WeatherWidgetProvider;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
@@ -38,13 +35,22 @@ public class WeatherDataViewModel extends ViewModel implements LifecycleObserver
     private final static String KEY = "5a7d8bef29c34458bc0f3e60f0cbefcd";
     String lang = Resources.getSystem().getConfiguration().locale.getLanguage();
 
-    private final MutableLiveData<CurrentWeather> currentLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Forecast> forecastLiveData = new MutableLiveData<>();
+
+    private final WeatherRepository weatherRepository = App.getInstance().getWeatherRepository();
+
+    private final LiveData<CurrentWeather> currentLiveData;
+    private final LiveData<ForecastWeather> forecastLiveData;
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+
+
+    public WeatherDataViewModel() {
+        super();
+        currentLiveData = weatherRepository.getCurrentWeather();
+        forecastLiveData = weatherRepository.getForecastWeather();
+    }
 
     Disposable disposable;
 
-    private final WeatherRepository weatherRepository = App.getInstance().weatherRepository;
     private final Handler handler = new Handler();
 
     private final Runnable taskRunnable = new Runnable() {
@@ -59,11 +65,11 @@ public class WeatherDataViewModel extends ViewModel implements LifecycleObserver
         return currentLiveData;
     }
 
-    public LiveData<Forecast> getForecast() {
+    public LiveData<ForecastWeather> getForecast() {
         return forecastLiveData;
     }
 
-    public LiveData<String> getError() {
+    public MutableLiveData<String> getError() {
         return errorLiveData;
     }
 
@@ -71,31 +77,32 @@ public class WeatherDataViewModel extends ViewModel implements LifecycleObserver
         Single<Response<CurrentWeather>> currentWeatherSingle = App.getInstance()
                 .weatherApiService
                 .getCurrentByCity(cityName, lang, KEY)
-                .doOnSuccess(currentWeather -> Log.d(MY_TAG, "doOnSuccess :: currentWeatherSingle"))
-                .doOnError(throwable -> Log.d(MY_TAG, "onError :: currentWeatherSingle --" + throwable.getMessage()));
+                .doOnSuccess(currentWeather -> Log.d(MY_TAG, "doOnSuccess :: currentWeatherSingle : code " + currentWeather.code()))
+                .doOnError(throwable -> Log.d(MY_TAG, "onError :: currentWeatherSingle : " + throwable.getMessage()));
 
-        Single<Response<Forecast>> forecastSingle = App.getInstance()
+        Single<Response<ForecastWeather>> forecastSingle = App.getInstance()
                 .weatherApiService
                 .getForecastByCity(cityName, lang, DAYS, KEY)
-                .doOnSuccess(forecast -> Log.d(MY_TAG, "doOnSuccess :: forecast"))
-                .doOnError(throwable -> Log.d(MY_TAG, "onError :: forecast --" + throwable.getMessage()));
+                .doOnSuccess(forecast -> Log.d(MY_TAG, "doOnSuccess :: forecast : code " + forecast.code()))
+                .doOnError(throwable -> Log.d(MY_TAG, "onError :: forecast : " + throwable.getMessage()));
 
         disposable = Single.zip(currentWeatherSingle, forecastSingle
-                , (currentWeatherResponse, forecastResponse) ->
-                        new AllWeatherData(currentWeatherResponse.body(), forecastResponse.body()))
+                , (currentWeatherResponse, forecastResponse) -> {
+                    if(currentWeatherResponse.code() != 200){
+                        Log.d(MY_TAG,"code() != 200");
+                        return null;
+                    }
+                    return new AllWeatherData(currentWeatherResponse.body(), forecastResponse.body());
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(allWeatherData -> Log.d(MY_TAG, "ZIP :: allWeatherData"))
                 .subscribe((AllWeatherData allWeatherData) -> {
                             if (allWeatherData.getCurrentWeather() != null
-                                    && allWeatherData.getForecast() != null) {
+                                    && allWeatherData.getForecastWeather() != null) {
                                 //save data to Repo
-                                weatherRepository.setCurrentWeather(allWeatherData.getCurrentWeather());
-                                weatherRepository.setForecast(allWeatherData.getForecast());
-
-                                //set data to LiveData
-                                currentLiveData.setValue(allWeatherData.getCurrentWeather());
-                                forecastLiveData.setValue(allWeatherData.getForecast());
+                                weatherRepository.insertCurrentWeather(allWeatherData.getCurrentWeather());
+                                weatherRepository.insertForecastWeather(allWeatherData.getForecastWeather());
 
                                 //save cityName
                                 Util.getInstance().saveCityName(cityName);
@@ -106,12 +113,12 @@ public class WeatherDataViewModel extends ViewModel implements LifecycleObserver
                                 App.getInstance().sendBroadcast(intent);
                                 Log.d(MY_TAG, "sendBroadcast :: UPDATE_ALL_WIDGETS");
                             } else {
-                                errorLiveData.setValue(App.getInstance().getString(R.string.wrong_city));
+                                errorLiveData.setValue("Wrong city name");
                             }
                         }
                         , throwable -> {
                             Log.d(MY_TAG, "onError :: ZIP");
-                            errorLiveData.setValue(App.getInstance().getString(R.string.network_error));
+                            errorLiveData.setValue("Network Error");
                         });
     }
 

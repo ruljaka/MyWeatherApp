@@ -2,26 +2,32 @@ package com.ruslangrigoriev.weather.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Weather{
+public class Weather {
 
-	@SerializedName("code")
-	private int code;
+    @SerializedName("icon")
+    private String icon;
 
-	@SerializedName("icon")
-	private String icon;
+    @SerializedName("description")
+    private String description;
 
-	@SerializedName("description")
-	private String description;
+    public Weather(String icon, String description) {
+        this.icon = icon;
+        this.description = description;
+    }
 
-	public int getCode(){
-		return code;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public String getIcon(){
-		return icon;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getDescription(){
-		return description;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

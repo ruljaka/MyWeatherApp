@@ -27,7 +27,7 @@ public class Util {
         return instance;
     }
 
-    public boolean isDay(CurrentWeather currentWeather) {
+    public  boolean isDay(CurrentWeather currentWeather) {
         LocalTime timeSunset = LocalTime.parse(currentWeather.getData().get(0).getSunset());
         LocalTime timeSunrise = LocalTime.parse(currentWeather.getData().get(0).getSunrise());
         LocalDate currentDate = LocalDate.now();
