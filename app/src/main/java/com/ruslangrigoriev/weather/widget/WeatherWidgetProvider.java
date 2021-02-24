@@ -16,11 +16,15 @@ import com.ruslangrigoriev.weather.App;
 import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
 import com.ruslangrigoriev.weather.data.entities.CurrentWeather;
+import com.ruslangrigoriev.weather.domain.WeatherApiService;
+import com.ruslangrigoriev.weather.domain.WeatherRepository;
 import com.ruslangrigoriev.weather.view.MainActivity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,6 +38,11 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     public static final String MY_TAG = "MyTag";
     private static final String UPDATE_ALL_WIDGETS = "update_all_widgets";
     private final static String KEY = "5a7d8bef29c34458bc0f3e60f0cbefcd";
+
+    @Inject
+    WeatherRepository weatherRepository;
+    @Inject
+    WeatherApiService weatherApiService;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -66,7 +75,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     private void updateWidgetFromRepo(Context context, AppWidgetManager appWidgetManager, int widgetId) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                 R.layout.layout_widget);
-        LiveData<CurrentWeather> currentWeather = App.getInstance().weatherRepository.getCurrentWeather();
+        //LiveData<CurrentWeather> currentWeather = App.getInstance().weatherRepository.getCurrentWeather();
+
+        App.getInstance().getAppComponent().inject(this);
+        LiveData<CurrentWeather> currentWeather = weatherRepository.getCurrentWeather();
+
+
         if (currentWeather.getValue() != null) {
             bindWidgetViews(currentWeather.getValue(), remoteViews, appWidgetManager, widgetId);
             Log.d(MY_TAG, "updateWidget from Repo");
@@ -86,8 +100,8 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                 mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.widgetLL, pIntent);
 
-        App.getInstance()
-                .weatherApiService
+        App.getInstance().getAppComponent().inject(this);
+        weatherApiService
                 .getCurrentByCity(Util.getCityName()
                         , Resources.getSystem().getConfiguration().locale.getLanguage()
                         , KEY)

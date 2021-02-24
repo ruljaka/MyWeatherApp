@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements EnterCityDialog.D
         }
 
         //subscribe Repository to auto update
-        getLifecycle().addObserver(App.getInstance().weatherRepository);
+        getLifecycle().addObserver(weatherDataViewModel);
 
         //swipe down to refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);

@@ -9,6 +9,6 @@ import com.ruslangrigoriev.weather.data.entities.ForecastWeather;
 @Database(entities = {CurrentWeather.class, ForecastWeather.class}, version = 2, exportSchema = false)
 public abstract class WeatherDataBase extends RoomDatabase {
 
-    public abstract WeatherDAO getWeatherDAO();
+    public abstract WeatherDAO weatherDAO();
 
 }
