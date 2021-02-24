@@ -14,20 +14,9 @@ import java.time.ZonedDateTime;
 
 public class Util {
 
-    private final String SAVED_CITY = "saved_city";
-    private static Util instance;
+    private static final String SAVED_CITY = "saved_city";
 
-    public Util() {
-    }
-
-    public static Util getInstance() {
-        if (instance == null) {
-            instance = new Util();
-        }
-        return instance;
-    }
-
-    public  boolean isDay(CurrentWeather currentWeather) {
+    public static boolean isDay(CurrentWeather currentWeather) {
         LocalTime timeSunset = LocalTime.parse(currentWeather.getData().get(0).getSunset());
         LocalTime timeSunrise = LocalTime.parse(currentWeather.getData().get(0).getSunrise());
         LocalDate currentDate = LocalDate.now();
@@ -47,12 +36,12 @@ public class Util {
         return systemZDTSunset.isAfter(nowZDT) && systemZDTSunrise.isBefore(nowZDT);
     }
 
-    public String getCityName() {
+    public static String getCityName() {
         SharedPreferences sharedPreferences = App.getInstance().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         return sharedPreferences.getString(SAVED_CITY, "");
     }
 
-    public void saveCityName(String city) {
+    public static void saveCityName(String city) {
         SharedPreferences.Editor ed = App.getInstance().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE).edit();
         ed.putString(SAVED_CITY, city);
         ed.apply();

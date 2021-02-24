@@ -36,37 +36,40 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     private final static String KEY = "5a7d8bef29c34458bc0f3e60f0cbefcd";
 
     @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-        //Log.d(MY_TAG,"widget onEnabled");
-    }
-
-    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         //Log.d(MY_TAG, "widget onUpdate");
-        if (!Util.getInstance().getCityName().equals("")) {
+        if (!Util.getCityName().equals("")) {
             for (int widgetId : appWidgetIds) {
                 updateWidgetFromAPI(context, appWidgetManager, widgetId);
-                //updateWidgetFromRepo(context, appWidgetManager, widgetId);
             }
         }
-
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        //Log.d(MY_TAG,"widget onReceive");
+        Log.d(MY_TAG, "onReceive :: " + intent.getAction());
         if (intent.getAction().equalsIgnoreCase(UPDATE_ALL_WIDGETS)) {
             ComponentName thisAppWidget = new ComponentName(
                     context.getPackageName(), getClass().getName());
             AppWidgetManager appWidgetManager = AppWidgetManager
                     .getInstance(context);
-            int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
+            int[] ids = appWidgetManager.getAppWidgetIds(thisAppWidget);
             for (int widgetId : ids) {
                 updateWidgetFromRepo(context, appWidgetManager, widgetId);
             }
+        }
+    }
+
+    //from Repo
+    private void updateWidgetFromRepo(Context context, AppWidgetManager appWidgetManager, int widgetId) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+                R.layout.layout_widget);
+        LiveData<CurrentWeather> currentWeather = App.getInstance().weatherRepository.getCurrentWeather();
+        if (currentWeather.getValue() != null) {
+            bindWidgetViews(currentWeather.getValue(), remoteViews, appWidgetManager, widgetId);
+            Log.d(MY_TAG, "updateWidget from Repo");
         }
     }
 
@@ -74,16 +77,18 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     private void updateWidgetFromAPI(Context context, AppWidgetManager appWidgetManager, int widgetId) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                 R.layout.layout_widget);
+
         Intent mainIntent = new Intent(context, MainActivity.class);
         mainIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
         mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+
         PendingIntent pIntent = PendingIntent.getActivity(context, widgetId,
                 mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.widgetLL, pIntent);
 
         App.getInstance()
                 .weatherApiService
-                .getCurrentByCity(Util.getInstance().getCityName()
+                .getCurrentByCity(Util.getCityName()
                         , Resources.getSystem().getConfiguration().locale.getLanguage()
                         , KEY)
                 .subscribeOn(Schedulers.io())
@@ -96,8 +101,10 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
 
                     @Override
                     public void onSuccess(@NonNull Response<CurrentWeather> currentWeatherResponse) {
-                        bindWidgetViews(currentWeatherResponse.body(), remoteViews, appWidgetManager, widgetId);
-                        //Log.d(MY_TAG, "updateWidget from API");
+                        if (currentWeatherResponse.body() != null) {
+                            bindWidgetViews(currentWeatherResponse.body(), remoteViews, appWidgetManager, widgetId);
+                            Log.d(MY_TAG, "updateWidget from API");
+                        }
                     }
 
                     @Override
@@ -105,24 +112,6 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                         //Log.d(MY_TAG, "updateWidget from API  error");
                     }
                 });
-
-    }
-
-    private void updateWidgetFromRepo(Context context, AppWidgetManager appWidgetManager, int widgetId) {
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-                R.layout.layout_widget);
-        Intent mainIntent = new Intent(context, MainActivity.class);
-        mainIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-        mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-        PendingIntent pIntent = PendingIntent.getActivity(context, widgetId,
-                mainIntent, 0);
-        remoteViews.setOnClickPendingIntent(R.id.widgetLL, pIntent);
-
-        LiveData<CurrentWeather> currentWeather = App.getInstance().weatherRepository.getCurrentWeather();
-        if(currentWeather.getValue() != null) {
-            bindWidgetViews(currentWeather.getValue(), remoteViews, appWidgetManager, widgetId);
-            //Log.d(MY_TAG, "updateWidget from Repo");
-        }
     }
 
     private void bindWidgetViews(CurrentWeather currentWeather, RemoteViews remoteViews, AppWidgetManager appWidgetManager, int widgetId) {
@@ -143,6 +132,4 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         //update
         appWidgetManager.updateAppWidget(widgetId, remoteViews);
     }
-
-
 }

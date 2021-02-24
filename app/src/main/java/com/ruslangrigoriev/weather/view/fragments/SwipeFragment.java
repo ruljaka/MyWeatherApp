@@ -113,7 +113,7 @@ public class SwipeFragment extends Fragment {
                         "%d %s",
                         (int) currentWeather.getData().get(0).getPres(),
                         SwipeFragment.this.getString(R.string.mb)));
-                if (Util.getInstance().isDay(currentWeather)) {
+                if (Util.isDay(currentWeather)) {
                     swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_day));
                 } else {
                     swipeCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.gradient_secondary_night));

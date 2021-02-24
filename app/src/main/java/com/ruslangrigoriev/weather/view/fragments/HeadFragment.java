@@ -68,7 +68,7 @@ public class HeadFragment extends Fragment {
 
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), (CurrentWeather currentWeather) -> {
             if(currentWeather != null) {
-                isDay = Util.getInstance().isDay(currentWeather);
+                isDay = Util.isDay(currentWeather);
                 cityNameTV.setText(currentWeather.getData().get(0).getCityName());
                 DataItem currentData = currentWeather.getData().get(0);
                 currentTempTV.setText(String.format(Locale.getDefault(), "%d°", Math.round(currentData.getTemp())));

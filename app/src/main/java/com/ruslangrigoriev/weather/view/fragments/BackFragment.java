@@ -52,7 +52,7 @@ public class BackFragment extends Fragment {
         weatherDataViewModel = new ViewModelProvider(getActivity()).get(WeatherDataViewModel.class);
         weatherDataViewModel.getCurrent().observe(getViewLifecycleOwner(), currentWeather -> {
             if(currentWeather != null) {
-                if (Util.getInstance().isDay(currentWeather)) {
+                if (Util.isDay(currentWeather)) {
                     backCL.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_day_background));
                     backIV.setImageResource(R.drawable.ic_day_image);
                 } else {

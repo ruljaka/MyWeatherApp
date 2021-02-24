@@ -57,6 +57,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
+    //Dagger2
+    implementation 'com.google.dagger:dagger-android:2.31.2'
+    implementation 'com.google.dagger:dagger-android-support:2.31.2'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.31.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
+
     //UI
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -64,11 +70,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'com.robinhood.spark:spark:1.2.0'
 
-    implementation 'com.google.android.gms:play-services-location:17.1.0'
-
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-
 }

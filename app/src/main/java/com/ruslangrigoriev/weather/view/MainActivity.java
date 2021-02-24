@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.ruslangrigoriev.weather.App;
 import com.ruslangrigoriev.weather.R;
 import com.ruslangrigoriev.weather.Util.Util;
 import com.ruslangrigoriev.weather.view.fragments.BackFragment;
@@ -57,18 +58,18 @@ public class MainActivity extends AppCompatActivity implements EnterCityDialog.D
                 .commit();
 
         //if city is not set show dialog to enter city
-        if (Util.getInstance().getCityName().equals("")) {
+        if (Util.getCityName().equals("")) {
             locationDialog = new EnterCityDialog(true);
             locationDialog.show(getSupportFragmentManager(), "showDialog");
         }
 
-        //subscribe ViewModel to auto update
-        getLifecycle().addObserver(weatherDataViewModel);
+        //subscribe Repository to auto update
+        getLifecycle().addObserver(App.getInstance().weatherRepository);
 
         //swipe down to refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            weatherDataViewModel.getData(Util.getInstance().getCityName());
+            weatherDataViewModel.getData(Util.getCityName());
             swipeRefreshLayout.setRefreshing(false);
             Log.d(MY_TAG, "refreshed");
         });
