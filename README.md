@@ -1,8 +1,8 @@
 # MyWeatherApp
 Просто приложение показывающее текущую погода и прогноз на 6 дней.
 
-![](https://drive.google.com/file/d/102GVSO2vxNmbn1dEZyLZ9r6FpjCgyIZz/view?usp=sharing)
-![](https://drive.google.com/file/d/10-_52fpVNusU_SF17vcaVMgjMV_a511W/view?usp=sharing)
+![]()
+![]()
 
 Данные предоставляются бесплатным **API [weatherbit.io](https://www.weatherbit.io/)**
 
