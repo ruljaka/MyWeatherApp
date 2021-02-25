@@ -1,8 +1,5 @@
 # MyWeatherApp
-Просто приложение показывающее текущую погода и прогноз на 6 дней.
-
-![]()
-![]()
+Простое приложение показывающее текущую погода и прогноз на 6 дней.
 
 Данные предоставляются бесплатным **API [weatherbit.io](https://www.weatherbit.io/)**
 
@@ -20,3 +17,8 @@
  - [Umano AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel),
 
  - [Spark](https://github.com/robinhood/spark)
+
+![](https://github.com/ruljaka/MyWeatherApp/blob/master/1.jpg)
+![](https://github.com/ruljaka/MyWeatherApp/blob/master/2.jpg)
+![](https://github.com/ruljaka/MyWeatherApp/blob/master/3.jpg)
+![](https://github.com/ruljaka/MyWeatherApp/blob/master/4.jpg)
